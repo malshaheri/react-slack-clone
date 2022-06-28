@@ -71,7 +71,7 @@ const HeaderSearch = styled.div`
   opacity: 1;
   border-radius: 6px;
   background-color: #421f44;
-  padding: 0 50px;
+  padding: 0 30px;
   color: gray;
   border: 1px solid gray;
   > input {
@@ -81,6 +81,7 @@ const HeaderSearch = styled.div`
     min-width: 30vw;
     outline: none;
     color: white;
+    padding: 10px;
   }
 `;
 const HeaderRight = styled.div`
