@@ -90,5 +90,6 @@ const HeaderRight = styled.div`
   > span {
     margin-left: auto;
     margin-right: 20px;
+    cursor: pointer;
   }
 `;

@@ -1,16 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
-import { IoMdStarOutline, IoMdInformationCircleOutline } from 'react-icons/io';
-import ChatInput from './ChatInput';
+import React from "react";
+import styled from "styled-components";
+import { IoMdStarOutline, IoMdInformationCircleOutline } from "react-icons/io";
+import ChatInput from "./ChatInput";
+import Message from "./Message";
 
 export default function Chat() {
   return (
     <ChatContainer>
       <Header>
         <HeaderLeft>
-          {' '}
+          {" "}
           <h4>new channel </h4>
-          <IoMdStarOutline />{' '}
+          <IoMdStarOutline />{" "}
         </HeaderLeft>
         <HeaderRight>
           <p>
@@ -19,6 +20,7 @@ export default function Chat() {
         </HeaderRight>
       </Header>
       <ChatMessage>
+        <Message />
         <ChatButton> </ChatButton>
       </ChatMessage>
       <ChatInput />
@@ -28,7 +30,6 @@ export default function Chat() {
 const ChatContainer = styled.div`
   margin-top: 60px;
 
-  
   flex: 0.7;
   flex-grow: 1;
   overflow-y: scroll;
@@ -44,10 +45,19 @@ const HeaderLeft = styled.div`
     margin: 10px;
   }
 `;
-const HeaderRight = styled.div`display: flex ; align-items: center; font-size:14px; >p {
- 
+const HeaderRight = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  
+  align-items: center;
+  font-size: 14px;
+  
+
+  > p {
     margin-right: 10px;
-}`;
+    cursor: pointer;
+  }
+`;
 const Header = styled.div`
   display: flex;
   justify-content: space-between;

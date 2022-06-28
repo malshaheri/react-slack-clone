@@ -36,18 +36,18 @@ export default function Sidebar() {
         </span>
       </SidebarHeader>
       <SidebarOption Icon={MdMessage} title="Message" />
-      <SidebarOption Icon={MdDrafts} title="Saved-items" />
+      <SidebarOption Icon={MdDrafts} title="Saved Items" />
       <SidebarOption Icon={MdAllInbox} title="Reactions" />
-      <SidebarOption Icon={MdOutlineBookmark} title="Channel-browser" />
-      <SidebarOption Icon={MdOutlineGroup} title="User-group" />
+      <SidebarOption Icon={MdOutlineBookmark} title="Channel Browser" />
+      <SidebarOption Icon={MdOutlineGroup} title="User Group" />
       <SidebarOption Icon={MdApps} title="Apps" />
-      <SidebarOption Icon={MdFileCopy} title="File-browser" />
-      <SidebarOption Icon={MdExpandLess} title="Show-Less" />
+      <SidebarOption Icon={MdFileCopy} title="File Browser" />
+      <SidebarOption Icon={MdExpandLess} title="Show Less" />
       <hr />
       <SidebarOption Icon={MdExpandMore} title="Channels" />
       <hr />
-      <SidebarOption Icon={BsPlusLg} title="Add-channel" />
-      <SidebarOption title="Create-New" />
+      <SidebarOption Icon={BsPlusLg} title="Add Channel" />
+      <SidebarOption title="Create New" />
     </SidebarContainer>
   );
 }
