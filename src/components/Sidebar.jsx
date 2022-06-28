@@ -1,9 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-
-import { BiPencil } from "react-icons/bi";
-import { VscCircleFilled } from "react-icons/vsc";
+import { BiPencil } from 'react-icons/bi';
+import { VscCircleFilled } from 'react-icons/vsc';
 import {
   MdMessage,
   MdAllInbox,
@@ -14,12 +13,11 @@ import {
   MdFileCopy,
   MdExpandLess,
   MdExpandMore,
-} from "react-icons/md";
-import { BsPlusLg } from "react-icons/bs";
+} from 'react-icons/md';
+import { BsPlusLg } from 'react-icons/bs';
+import SidebarOption from './SidebarOption';
 
 export default function Sidebar() {
- 
-
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -27,18 +25,29 @@ export default function Sidebar() {
           <h2>slack</h2>
           <h3>
             <span>
-              {" "}
+              {' '}
               <VscCircleFilled />
             </span>
-           Group Project
+            Group Project
           </h3>
         </SidebarInfo>
         <span>
           <BiPencil />
         </span>
       </SidebarHeader>
-
-
+      <SidebarOption Icon={MdMessage} title="Message" />
+      <SidebarOption Icon={MdDrafts} title="Saved-items" />
+      <SidebarOption Icon={MdAllInbox} title="Reactions" />
+      <SidebarOption Icon={MdOutlineBookmark} title="Channel-browser" />
+      <SidebarOption Icon={MdOutlineGroup} title="User-group" />
+      <SidebarOption Icon={MdApps} title="Apps" />
+      <SidebarOption Icon={MdFileCopy} title="File-browser" />
+      <SidebarOption Icon={MdExpandLess} title="Show-Less" />
+      <hr />
+      <SidebarOption Icon={MdExpandMore} title="Channels" />
+      <hr />
+      <SidebarOption Icon={BsPlusLg} title="Add-channel" />
+      <SidebarOption title="Create-New" />
     </SidebarContainer>
   );
 }
