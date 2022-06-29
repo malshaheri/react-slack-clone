@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -23,7 +23,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 export default function Sidebar() {
   const [channels] = useCollection(db.collection("rooms"));
   const [user] = useAuthState(auth);
+  const [show, setShow] = useState(true);
+  const [less, setLess] = useState(true);
 
+  console.log(show);
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -41,23 +44,39 @@ export default function Sidebar() {
           <BiPencil />
         </span>
       </SidebarHeader>
+      <div style={{ display: less ? "block" : "none" }}>
+        <SidebarOption Icon={MdMessage} title={"Threads"} />
+        <SidebarOption Icon={MdAllInbox} title={"Mentions & reactions"} />
+        <SidebarOption Icon={MdDrafts} title={"Saved items"} />
+        <SidebarOption Icon={MdOutlineBookmark} title={"Channel browser"} />
+        <SidebarOption Icon={MdOutlineGroup} title={"People & user groups"} />
+        <SidebarOption Icon={MdApps} title={"Apps"} />
+        <SidebarOption Icon={MdFileCopy} title={"File browser"} />
+      </div>
 
-      <SidebarOption Icon={MdMessage} title={"Threads"} />
-      <SidebarOption Icon={MdAllInbox} title={"Mentions & reactions"} />
-      <SidebarOption Icon={MdDrafts} title={"Saved items"} />
-      <SidebarOption Icon={MdOutlineBookmark} title={"Channel browser"} />
-      <SidebarOption Icon={MdOutlineGroup} title={"People & user groups"} />
-      <SidebarOption Icon={MdApps} title={"Apps"} />
-      <SidebarOption Icon={MdFileCopy} title={"File browser"} />
-      <SidebarOption Icon={MdExpandLess} title={"Show less"} />
-      <hr />
-      <SidebarOption Icon={MdExpandMore} title={"Chanels"} />
-      <hr />
-      <SidebarOption Icon={BsPlusLg} addChannelOption title={"Add Chanel"} />
+      <bottom type="click" onClick={() => setLess(!less)}>
+        <SidebarOption
+          Icon={less ? MdExpandLess : MdExpandMore}
+          title={less ? "Show less" : "Show more"}
+        />
+      </bottom>
 
-      {channels?.docs.map((doc) => (
-        <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
-      ))}
+      <hr />
+      <bottom type="click" onClick={() => setShow(!show)}>
+        <SidebarOption
+          Icon={show ? MdExpandLess : MdExpandMore}
+          title={show ? "Hide Chanels" : "Show Chanels"}
+        />
+      </bottom>
+
+      <hr />
+      <div style={{ display: show ? "block" : "none" }}>
+        <SidebarOption Icon={BsPlusLg} addChannelOption title={"Add Chanel"} />
+
+        {channels?.docs.map((doc) => (
+          <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+        ))}
+      </div>
     </SidebarContainer>
   );
 }
@@ -72,7 +91,6 @@ const SidebarContainer = styled.div`
   min-width: 150px;
   overflow: auto;
 
-
   > hr {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -80,7 +98,6 @@ const SidebarContainer = styled.div`
   }
 `;
 const SidebarHeader = styled.div`
-  
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -103,7 +120,6 @@ const SidebarHeader = styled.div`
 `;
 const SidebarInfo = styled.div`
   flex: 1;
-
 
   > h2 {
     font-size: 15px;
