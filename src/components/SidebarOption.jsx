@@ -1,11 +1,29 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { db } from "../firebase";
+import {enterRoom} from '../features/apprSlice' 
 
-function SidebarOption({ Icon, title, addChannelOption }) {
-  const addChannel = () => {};
 
-  const selectChannel = () => {};
+function SidebarOption({ Icon, title, addChannelOption , id}) {
+  // console.log("channel====>", channels && channels.docs)
+  // const addChannel = () => {};
 
+  // const selectChannel = () => {};
+
+  const dispatch = useDispatch(); 
+const addChannel = () => {
+const channelName = prompt("Add Channel");
+if (channelName) {
+db.collection("rooms").add({ name: channelName });
+}
+};
+const selectChannel = () => {
+if (id) {
+dispatch(enterRoom({ roomId: id }));
+}
+}; 
+console.log("dispatch", dispatch )
   return (
     <SidebarOptionContianer
       onClick={addChannelOption ? addChannel : selectChannel}
