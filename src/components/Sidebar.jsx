@@ -3,9 +3,9 @@ import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db, auth } from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth"; 
-import { BiPencil } from 'react-icons/bi';
-import { VscCircleFilled } from 'react-icons/vsc';
+
+import { BiPencil } from "react-icons/bi";
+import { VscCircleFilled } from "react-icons/vsc";
 import {
   MdMessage,
   MdAllInbox,
@@ -16,18 +16,14 @@ import {
   MdFileCopy,
   MdExpandLess,
   MdExpandMore,
-} from 'react-icons/md';
-import { BsPlusLg } from 'react-icons/bs';
-
-
-
+} from "react-icons/md";
+import { BsPlusLg } from "react-icons/bs";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Sidebar() {
   const [channels] = useCollection(db.collection("rooms"));
-const [user] = useAuthState(auth); 
+  const [user] = useAuthState(auth);
 
-console.log("channel", channels && channels.docs)
-console.log("user", user)
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -35,33 +31,33 @@ console.log("user", user)
           <h2>slack</h2>
           <h3>
             <span>
-              {' '}
+              {" "}
               <VscCircleFilled />
             </span>
-            Group Project
+            {user.displayName}
           </h3>
         </SidebarInfo>
         <span>
           <BiPencil />
         </span>
       </SidebarHeader>
-      <SidebarOption Icon={MdMessage} title="Message" />
-      <SidebarOption Icon={MdDrafts} title="Saved Items" />
-      <SidebarOption Icon={MdAllInbox} title="Reactions" />
-      <SidebarOption Icon={MdOutlineBookmark} title="Channel Browser" />
-      <SidebarOption Icon={MdOutlineGroup} title="User Group" />
-      <SidebarOption Icon={MdApps} title="Apps" />
-      <SidebarOption Icon={MdFileCopy} title="File Browser" />
-      <SidebarOption Icon={MdExpandLess} title="Show Less" />
-      <hr />
-      <SidebarOption Icon={MdExpandMore} title="Channels" />
-      <hr />
-      <SidebarOption Icon={BsPlusLg} title="Add Channel" addChannelOption />
-      {/* <SidebarOption title="Create New" /> */}
-      {channels?.docs.map((doc) => (
-<SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
-))} 
 
+      <SidebarOption Icon={MdMessage} title={"Threads"} />
+      <SidebarOption Icon={MdAllInbox} title={"Mentions & reactions"} />
+      <SidebarOption Icon={MdDrafts} title={"Saved items"} />
+      <SidebarOption Icon={MdOutlineBookmark} title={"Channel browser"} />
+      <SidebarOption Icon={MdOutlineGroup} title={"People & user groups"} />
+      <SidebarOption Icon={MdApps} title={"Apps"} />
+      <SidebarOption Icon={MdFileCopy} title={"File browser"} />
+      <SidebarOption Icon={MdExpandLess} title={"Show less"} />
+      <hr />
+      <SidebarOption Icon={MdExpandMore} title={"Chanels"} />
+      <hr />
+      <SidebarOption Icon={BsPlusLg} addChannelOption title={"Add Chanel"} />
+
+      {channels?.docs.map((doc) => (
+        <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+      ))}
     </SidebarContainer>
   );
 }
@@ -74,6 +70,9 @@ const SidebarContainer = styled.div`
   max-width: 260px;
   margin-top: 60px;
   min-width: 150px;
+  overflow: auto;
+
+
   > hr {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -81,6 +80,7 @@ const SidebarContainer = styled.div`
   }
 `;
 const SidebarHeader = styled.div`
+  
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -103,6 +103,7 @@ const SidebarHeader = styled.div`
 `;
 const SidebarInfo = styled.div`
   flex: 1;
+
 
   > h2 {
     font-size: 15px;

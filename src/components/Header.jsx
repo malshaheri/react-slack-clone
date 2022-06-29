@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
 
 import {
   IoPersonCircleOutline,
@@ -9,12 +11,27 @@ import {
 } from "react-icons/io5";
 
 export default function Header() {
+  const [user] = useAuthState(auth);
   return (
     <HeaderContainer>
       <HeaderLeft>
-        
+        {/* {user.photoURL ? (
+          <img
+            onClick={() => auth.signOut()}
+            alt={user?.displayName}
+            src={user?.photoURL}
+          />
+        ) : (
+          <HeaderAvatar
+            onClick={() => auth.signOut()}
+            alt={user?.displayName}
+            src={user?.photoURL}
+          />
+        )} */}
         <HeaderAvatar
-        
+          onClick={() => auth.signOut()}
+          alt={user?.displayName}
+          src={user?.photoURL}
         />
         <span>
           <IoTime />
@@ -71,7 +88,7 @@ const HeaderSearch = styled.div`
   opacity: 1;
   border-radius: 6px;
   background-color: #421f44;
-  padding: 0 30px;
+  padding: 0 10px;
   color: gray;
   border: 1px solid gray;
   > input {
@@ -81,7 +98,7 @@ const HeaderSearch = styled.div`
     min-width: 30vw;
     outline: none;
     color: white;
-    padding: 10px;
+    padding: 5px;
   }
 `;
 const HeaderRight = styled.div`
@@ -91,6 +108,5 @@ const HeaderRight = styled.div`
   > span {
     margin-left: auto;
     margin-right: 20px;
-    cursor: pointer;
   }
 `;
