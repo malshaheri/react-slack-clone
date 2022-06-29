@@ -1,6 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-
+import React from "react";
+import styled from "styled-components";
+import SidebarOption from "./SidebarOption";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { db, auth } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth"; 
 import { BiPencil } from 'react-icons/bi';
 import { VscCircleFilled } from 'react-icons/vsc';
 import {
@@ -15,9 +18,16 @@ import {
   MdExpandMore,
 } from 'react-icons/md';
 import { BsPlusLg } from 'react-icons/bs';
-import SidebarOption from './SidebarOption';
+
+
+
 
 export default function Sidebar() {
+  const [channels] = useCollection(db.collection("rooms"));
+const [user] = useAuthState(auth); 
+
+console.log("channel", channels && channels.docs)
+console.log("user", user)
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -46,8 +56,12 @@ export default function Sidebar() {
       <hr />
       <SidebarOption Icon={MdExpandMore} title="Channels" />
       <hr />
-      <SidebarOption Icon={BsPlusLg} title="Add Channel" />
-      <SidebarOption title="Create New" />
+      <SidebarOption Icon={BsPlusLg} title="Add Channel" addChannelOption />
+      {/* <SidebarOption title="Create New" /> */}
+      {channels?.docs.map((doc) => (
+<SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+))} 
+
     </SidebarContainer>
   );
 }
