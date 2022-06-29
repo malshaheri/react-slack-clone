@@ -54,20 +54,20 @@ export default function Sidebar() {
         <SidebarOption Icon={MdFileCopy} title={"File browser"} />
       </div>
 
-      <bottom type="click" onClick={() => setLess(!less)}>
+      <button type="click" onClick={() => setLess(!less)}>
         <SidebarOption
           Icon={less ? MdExpandLess : MdExpandMore}
           title={less ? "Show less" : "Show more"}
         />
-      </bottom>
+      </button>
 
       <hr />
-      <bottom type="click" onClick={() => setShow(!show)}>
+      <button type="click" onClick={() => setShow(!show)}>
         <SidebarOption
           Icon={show ? MdExpandLess : MdExpandMore}
           title={show ? "Hide Chanels" : "Show Chanels"}
         />
-      </bottom>
+      </button>
 
       <hr />
       <div style={{ display: show ? "block" : "none" }}>
@@ -95,6 +95,14 @@ const SidebarContainer = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
     border: 1px solid #49274b;
+  }
+  > button {
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #817f7f;
+    font-size: 10px;
   }
 `;
 const SidebarHeader = styled.div`
