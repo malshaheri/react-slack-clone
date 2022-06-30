@@ -1,51 +1,70 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
+import { BsStopwatch } from "react-icons/bs";
+import { FiPlayCircle } from "react-icons/fi";
 
 import {
+  IoRefreshOutline,
   IoPersonCircleOutline,
-  IoTime,
   IoSearch,
   IoHelpCircleOutline,
 } from "react-icons/io5";
 
 export default function Header() {
   const [user] = useAuthState(auth);
+  const [seconds, setSeconds] = useState(null);
+  const renders = useRef(0);
+  const inputRef = useRef();
+  const timerId = useRef();
+
+  const startTimer = () => {
+    timerId.current = setInterval(() => {
+      renders.current++;
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+    inputRef.current.focus();
+  };
+
+  const stopTimer = () => {
+    clearInterval(timerId.current);
+    timerId.current = 0;
+    inputRef.current.focus();
+  };
+
+  const resetTimer = () => {
+    setSeconds(0);
+    stopTimer();
+    inputRef.current.focus();
+  };
+
   return (
     <HeaderContainer>
       <HeaderLeft>
-        {/* {user.photoURL ? (
-          <img
-            onClick={() => auth.signOut()}
-            alt={user?.displayName}
-            src={user?.photoURL}
-          />
-        ) : (
-          <HeaderAvatar
-            onClick={() => auth.signOut()}
-            alt={user?.displayName}
-            src={user?.photoURL}
-          />
-        )} */}
         <HeaderAvatar
           onClick={() => auth.signOut()}
           alt={user?.displayName}
           src={user?.photoURL}
         />
-        <span>
-          <IoTime />
-        </span>
       </HeaderLeft>
 
       <HeaderSearch>
         <IoSearch />
         <input type="text" placeholder="Search" />
       </HeaderSearch>
+      <IoHelpCircleOutline style={{ marginLeft: "10px" }} />
+
       <HeaderRight>
-        <span>
-          <IoHelpCircleOutline />
-        </span>{" "}
+        <TimerContainer>
+          <span></span>
+          <span>{seconds}</span>
+          <FiPlayCircle onClick={startTimer} />
+          &nbsp;&nbsp;
+          <BsStopwatch onClick={stopTimer} />
+          &nbsp;&nbsp;
+          <IoRefreshOutline onClick={resetTimer} />
+        </TimerContainer>
       </HeaderRight>
     </HeaderContainer>
   );
@@ -65,11 +84,6 @@ const HeaderLeft = styled.div`
   flex: 0.3;
   display: flex;
   align-items: center;
-  margin-left: 20px;
-  > span {
-    margin-right: 30px;
-    margin-left: auto;
-  }
 `;
 
 const HeaderAvatar = styled(IoPersonCircleOutline)`
@@ -108,5 +122,20 @@ const HeaderRight = styled.div`
   > span {
     margin-left: auto;
     margin-right: 20px;
+  }
+`;
+
+const TimerContainer = styled.span`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > span {
+    margin-left: auto;
+    margin-right: 20px;
+    font-family: arial;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
   }
 `;

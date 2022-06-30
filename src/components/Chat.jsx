@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IoMdStarOutline, IoMdInformationCircleOutline } from "react-icons/io";
 import ChatInput from "./ChatInput";
 import Message from "./Message";
-
+import { GrChannel } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { selectRoomId } from "../features/apprSlice";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
@@ -36,7 +36,13 @@ export default function Chat() {
           <Header>
             <HeaderLeft>
               <h4>
-                <strong>#{roomDetails?.data().name}</strong>
+                <strong>
+                  {" "}
+                  <span>
+                    <GrChannel />
+                  </span>{" "}
+                  {roomDetails?.data().name}
+                </strong>
               </h4>
 
               <IoMdStarOutline />
@@ -94,6 +100,7 @@ const HeaderLeft = styled.div`
     display: flex;
     text-transform: lowercase;
     margin-right: 10px;
+    
   }
 `;
 const HeaderRight = styled.div`

@@ -1,15 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export const appSlice = createSlice({
   name: "app",
   initialState: {
     roomId: null,
+    //----------------------------------------------------------------
+    loading: false,
+    currentUser: null,
+    error: null,
   },
 
   reducers: {
     enterRoom: (state, action) => {
       state.roomId = action.payload.roomId;
     },
+
   },
 });
 

@@ -8,6 +8,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 import Login from "./components/Login";
 import Spinner from "react-spinkit";
+import Register from "./components/Register";
+import Applications from "./components/apps/Applications";
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -27,7 +29,10 @@ function App() {
   return (
     <div className="app">
       {!user ? (
-        <Login />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
       ) : (
         <>
           <Header />
@@ -35,6 +40,7 @@ function App() {
             <Sidebar />
             <Routes>
               <Route path="/" exact element={<Chat />} />
+              <Route path="/applications" element={<Applications />} />
             </Routes>
           </AppBody>
         </>

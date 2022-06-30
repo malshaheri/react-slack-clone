@@ -4,6 +4,8 @@ import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db, auth } from "../firebase";
 
+import { NavLink, Link } from "react-router-dom";
+
 import { BiPencil } from "react-icons/bi";
 import { VscCircleFilled } from "react-icons/vsc";
 import {
@@ -26,7 +28,7 @@ export default function Sidebar() {
   const [show, setShow] = useState(true);
   const [less, setLess] = useState(true);
 
-  console.log(show);
+  // console.log(show);
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -46,11 +48,13 @@ export default function Sidebar() {
       </SidebarHeader>
       <div style={{ display: less ? "block" : "none" }}>
         <SidebarOption Icon={MdMessage} title={"Threads"} />
-        <SidebarOption Icon={MdAllInbox} title={"Mentions & reactions"} />
+        <SidebarOption Icon={MdAllInbox} title={"Reactions"} />
         <SidebarOption Icon={MdDrafts} title={"Saved items"} />
-        <SidebarOption Icon={MdOutlineBookmark} title={"Channel browser"} />
-        <SidebarOption Icon={MdOutlineGroup} title={"People & user groups"} />
-        <SidebarOption Icon={MdApps} title={"Apps"} />
+        <SidebarOption Icon={MdOutlineBookmark} title={"Browser"} />
+        <SidebarOption Icon={MdOutlineGroup} title={"People"} />
+        <NavLink to="/applications">
+          <SidebarOption Icon={MdApps} title="Apps" />{" "}
+        </NavLink>
         <SidebarOption Icon={MdFileCopy} title={"File browser"} />
       </div>
 
@@ -71,10 +75,12 @@ export default function Sidebar() {
 
       <hr />
       <div style={{ display: show ? "block" : "none" }}>
-        <SidebarOption Icon={BsPlusLg} addChannelOption title={"Add Chanel"} />
+        <SidebarOption Icon={BsPlusLg} addChannelOption title={"Add Channel"} />
 
         {channels?.docs.map((doc) => (
-          <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+          <Link to="/">
+            <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+          </Link>
         ))}
       </div>
     </SidebarContainer>
