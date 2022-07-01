@@ -5,10 +5,9 @@ import { db } from "../firebase";
 import { enterRoom } from "../features/apprSlice";
 import { MdOutlineDelete } from "react-icons/md";
 //..............................
-import {
-  deleteDoc,
-  doc,
-} from "firebase/firestore"; /*"firebase/compat/firestore" */
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+// import firebase from "firebase/compat/app";
 
 export default function SidebarOption({ Icon, title, addChannelOption, id }) {
   //   console.log("channels", channels && channels.docs);
@@ -25,14 +24,18 @@ export default function SidebarOption({ Icon, title, addChannelOption, id }) {
     }
   };
   //----------------------------------------------------------------
-
-    const deleteChannel = async () => {
-       const ref = await db.collection("rooms").doc(id).deleteDoc(doc);
-       window.location.reload();
-      
-  return ref
-    };
-
+  const deleteChannel = () => {
+    db.collection("rooms")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+    window.location.reload();
+  };
 
   return (
     <div>
@@ -44,10 +47,11 @@ export default function SidebarOption({ Icon, title, addChannelOption, id }) {
         {Icon ? (
           <h3>{title}</h3>
         ) : (
-          <SidebarOptionChannel>
+          <SidebarOptionChannel key={id}>
             <h3>
               <span># {title}</span>
               <LineDelete>
+                {" "}
                 <MdOutlineDelete onClick={deleteChannel} />
               </LineDelete>
             </h3>

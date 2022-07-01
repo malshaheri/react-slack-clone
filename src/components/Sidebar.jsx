@@ -28,7 +28,7 @@ export default function Sidebar() {
   const [show, setShow] = useState(true);
   const [less, setLess] = useState(true);
 
-  // console.log(show);
+  // console.log(channels);
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -48,10 +48,10 @@ export default function Sidebar() {
       </SidebarHeader>
       <div style={{ display: less ? "block" : "none" }}>
         <SidebarOption Icon={MdMessage} title={"Threads"} />
-        <SidebarOption Icon={MdAllInbox} title={"Reactions"} />
-        <SidebarOption Icon={MdDrafts} title={"Saved items"} />
-        <SidebarOption Icon={MdOutlineBookmark} title={"Browser"} />
-        <SidebarOption Icon={MdOutlineGroup} title={"People"} />
+        <SidebarOption  Icon={MdAllInbox} title={"Reactions"} />
+        <SidebarOption  Icon={MdDrafts} title={"Saved items"} />
+        <SidebarOption  Icon={MdOutlineBookmark} title={"Browser"} />
+        <SidebarOption  Icon={MdOutlineGroup} title={"People"} />
         <NavLink to="/applications">
           <SidebarOption Icon={MdApps} title="Apps" />{" "}
         </NavLink>

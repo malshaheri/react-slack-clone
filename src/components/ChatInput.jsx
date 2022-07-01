@@ -10,7 +10,7 @@ export default function ChatInput({ channelName, channelId, chatRef }) {
   //   console.log(channelId);
   const [input, setInput] = useState("");
   const [user] = useAuthState(auth);
-  console.log(user);
+  // console.log(user);
   const sendMessage = (e) => {
     e.preventDefault();
     if (!channelId) {

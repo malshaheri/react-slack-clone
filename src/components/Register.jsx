@@ -11,7 +11,7 @@ export default function Register() {
     password: "",
     passwordConfirm: "",
   });
-  console.log({ ...state });
+  // console.log({ ...state });
   const { currentUser } = useSelector((state) => state.app);
   const navigate = useNavigate();
 
