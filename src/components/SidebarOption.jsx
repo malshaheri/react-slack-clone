@@ -5,11 +5,12 @@ import { db } from "../firebase";
 import { enterRoom } from "../features/apprSlice";
 import { MdOutlineDelete } from "react-icons/md";
 //..............................
+import {
+  deleteDoc,
+  doc,
+} from "firebase/firestore"; /*"firebase/compat/firestore" */
 
-
-
-
-export default function SidebarOption({ Icon, title, addChannelOption,id}) {
+export default function SidebarOption({ Icon, title, addChannelOption, id }) {
   //   console.log("channels", channels && channels.docs);
   const dispatch = useDispatch();
   const addChannel = () => {
@@ -25,16 +26,18 @@ export default function SidebarOption({ Icon, title, addChannelOption,id}) {
   };
   //----------------------------------------------------------------
 
-  const deleteChannel = async () => {
-//      const ref = await db.collection("rooms").doc(id).delete();
-//      window.location.reload();
-//      console.log("test ID======>", db.collection("rooms"));
-// return ref
-  };
+    const deleteChannel = async () => {
+       const ref = await db.collection("rooms").doc(id).deleteDoc(doc);
+       window.location.reload();
+      
+  return ref
+    };
+
 
   return (
     <div>
       <SidebarOptionContianer
+        key={id}
         onClick={addChannelOption ? addChannel : selectChannel}
       >
         {Icon && <Icon style={{ padding: "8px" }} />}
