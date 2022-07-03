@@ -22,12 +22,7 @@ import {
 
 //................................
 
-const SidebarOption = ({
-  Icon,
-  title,
-  addChannelOption,
-  id,
-}) => {
+const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
   //   console.log("channels", channels && channels.docs);
   const [rooms, setRooms] = useState([]);
   const dispatch = useDispatch();
@@ -64,17 +59,14 @@ const SidebarOption = ({
     window.location.reload();
   };
 
-
-
   return (
     <div>
       <SidebarOptionContianer
         key={id}
-        onClick={(addChannelOption ? addChannel : selectChannel)}
+        onClick={addChannelOption ? addChannel : selectChannel}
       >
         {Icon && <Icon style={{ padding: "8px" }} />}
 
-       
         {Icon ? (
           <h3>{title}</h3>
         ) : (
@@ -101,6 +93,7 @@ const SidebarOptionContianer = styled.div`
   padding: 2px;
   font-size: 12px;
   transition: 0.5s;
+  width: 100%;
 
   :hover {
     opacity: 0.9;
@@ -116,11 +109,12 @@ const SidebarOptionChannel = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  width: 100%;
   > h3 {
     font-weight: 300;
     display: flex;
     justify-content: space-between;
-    width: 100px;
+    width: 80%;
 
     > span {
       padding-left: auto;
