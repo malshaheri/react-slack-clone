@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -20,15 +20,57 @@ import {
   MdExpandMore,
 } from "react-icons/md";
 import { BsPlusLg } from "react-icons/bs";
+import { AiOutlineUsergroupDelete } from "react-icons/ai";
+
+
 import { useAuthState } from "react-firebase-hooks/auth";
+
+import {
+  onSnapshot,
+  collection,
+  doc,
+  deleteDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+
 
 export default function Sidebar() {
   const [channels] = useCollection(db.collection("rooms"));
+  const [rooms, setRooms] = useState([]);
+
   const [user] = useAuthState(auth);
   const [show, setShow] = useState(true);
   const [less, setLess] = useState(true);
 
   // console.log(channels);
+
+  //---------------deletQu----------------------
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "rooms"), (snapshot) =>
+        setRooms(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      ),
+    [rooms]
+  );
+
+  const deleteQuChannel = async () => {
+    const userInputName = prompt("Enter rooms name");
+
+    const collectionRef = collection(db, "rooms");
+    const q = query(collectionRef, where("name", "==", userInputName));
+    const snapshot = await getDocs(q);
+
+    const results = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    results.forEach(async (result) => {
+      const docRef = doc(db, "rooms", result.id);
+      await deleteDoc(docRef);
+    });
+  };
+
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -40,21 +82,24 @@ export default function Sidebar() {
               <VscCircleFilled />
             </span>
             {user.displayName}
+
+            <h4>
+              <BiPencil />
+            </h4>
           </h3>
         </SidebarInfo>
-        <span>
-          <BiPencil />
-        </span>
       </SidebarHeader>
       <div style={{ display: less ? "block" : "none" }}>
-        <SidebarOption Icon={MdMessage} title={"Threads"} />
-        <SidebarOption  Icon={MdAllInbox} title={"Reactions"} />
-        <SidebarOption  Icon={MdDrafts} title={"Saved items"} />
-        <SidebarOption  Icon={MdOutlineBookmark} title={"Browser"} />
-        <SidebarOption  Icon={MdOutlineGroup} title={"People"} />
-        <NavLink to="/applications">
-          <SidebarOption Icon={MdApps} title="Apps" />{" "}
+        <NavLink to="/threads">
+          <SidebarOption Icon={MdMessage} title={"Threads"} />
         </NavLink>
+        <SidebarOption Icon={MdAllInbox} title={"Reactions"} />
+        <SidebarOption Icon={MdDrafts} title={"Saved items"} />
+        <SidebarOption Icon={MdOutlineBookmark} title={"Browser"} />
+        <SidebarOption Icon={MdOutlineGroup} title={"People"} />
+        <Link to="/applications">
+          <SidebarOption Icon={MdApps} title="Apps" />{" "}
+        </Link>
         <SidebarOption Icon={MdFileCopy} title={"File browser"} />
       </div>
 
@@ -77,6 +122,11 @@ export default function Sidebar() {
       <div style={{ display: show ? "block" : "none" }}>
         <SidebarOption Icon={BsPlusLg} addChannelOption title={"Add Channel"} />
 
+        <button onClick={()=>deleteQuChannel()}>
+          <AiOutlineUsergroupDelete />
+          Query Delete
+        </button>
+
         {channels?.docs.map((doc) => (
           <Link to="/">
             <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
@@ -86,7 +136,6 @@ export default function Sidebar() {
     </SidebarContainer>
   );
 }
-
 const SidebarContainer = styled.div`
   color: white;
   background-color: var(--slack-color);
@@ -118,34 +167,30 @@ const SidebarHeader = styled.div`
   border-bottom: 1px solid #49274b;
   padding-bottom: 10px;
   padding: 13px;
-  > span {
-    font-size: 18px;
-    padding: 8px;
-    color: #49274b;
-    font-size: 18px;
-    background-color: white;
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 `;
 const SidebarInfo = styled.div`
   flex: 1;
 
   > h2 {
-    font-size: 15px;
+    font-size: 30px;
     font-weight: 900;
     padding-bottom: 30px;
+    padding-left: 10px;
   }
   > h3 {
     display: flex;
-    font-size: 13px;
-    font-weight: 400;
+    font-size: 18px;
+    font-weight: 900;
     padding-bottom: 20px;
     align-items: center;
+    > h4 {
+      font-size: 20px;
+      padding-left:20px;
+      font-weight: 900;
+      :hover {
+        opacity: 0.7;
+      }
+    }
   }
   > h3 > span {
     color: green;

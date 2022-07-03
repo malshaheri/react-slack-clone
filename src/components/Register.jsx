@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import { registerInitiate } from "./LoginMethod/actions";
+import { firebaseApp, database } from "../firebase";
+import { uid } from "uid";
+import { set, ref } from "firebase/database";
 
 export default function Register() {
   const [state, setState] = useState({
@@ -11,28 +14,69 @@ export default function Register() {
     password: "",
     passwordConfirm: "",
   });
-  // console.log({ ...state });
+  const [valid, setValid] = useState(true);
+  const [errorState, setErrorState] = useState("");
   const { currentUser } = useSelector((state) => state.app);
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUser) {
       navigate(`/`);
     }
+
+    //....................
+
+    //...............................
   }, [currentUser, navigate]);
 
   const dispatch = useDispatch();
 
   const { email, displayName, password, passwordConfirm } = state;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password !== passwordConfirm) {
+  const checkUserRegisterValid = (e) => {
+    setErrorState("");
+
+    if (
+      password !== passwordConfirm ||
+      displayName.length < 4 ||
+      password.length < 5
+    ) {
+      setValid(false);
       return;
     }
-    dispatch(registerInitiate(email, password, displayName));
-    setState({ email: "", displayName: "", password: "", passwordConfirm: "" });
-    window.location.replace("/");
+    firebaseApp
+      .auth()
+      .createUserWithEmailAndPassword(email, password, displayName)
+      .then((createdUser) => {
+        updataUserDetails(createdUser);
+      })
+      .catch((serverError) => {
+        setErrorState(
+          (error) =>
+            serverError &&
+            error.concat(
+              "The email address is already in use by another account"
+            )
+        );
+        // console.log("error", serverError);
+      });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (checkUserRegisterValid()) {
+      dispatch(registerInitiate(email, password, displayName));
+      setState({
+        email: "",
+        displayName: "",
+        password: "",
+        passwordConfirm: "",
+      });
+      setValid(true);
+      writeToDatabase();
+      window.location.replace("/");
+    }
   };
 
   const handleChange = (e) => {
@@ -40,6 +84,39 @@ export default function Register() {
     let value = e.target.value;
     setState({ ...state, [name]: value });
   };
+  //-----------------------updataUserData---------------------------------
+
+  const updataUserDetails = (createdUser) => {
+    if (createdUser) {
+      createdUser.user
+        .updateProfile({
+          displayName: state.displayName,
+          photoURL: `https://avatars.dicebear.com/api/adventurer/:${createdUser.user.uid}.svg`,
+        })
+        .then(() => {
+          writeToDatabase();
+          // console.log(createdUser);
+        })
+        .catch((serverError) => {
+          setErrorState((error) => error.concat(serverError));
+          // console.log(serverError);
+        });
+    }
+  };
+
+  //-----------------------user collection---------------------------------
+  //wite
+  const writeToDatabase = () => {
+    const uuid = uid();
+    set(ref(database, `/${uuid}`), {
+      email: state.email,
+      displayName: state.displayName,
+      password: state.password,
+      uuid,
+    });
+    console.log("hi it is working", uuid);
+  };
+  //update
 
   return (
     <LoginContainer>
@@ -85,7 +162,7 @@ export default function Register() {
             <input
               autoComplete="new-password"
               name="passwordConfirm"
-              type="passwordConfirm"
+              type="password"
               id="newinputPassword"
               value={passwordConfirm}
               required
@@ -113,6 +190,21 @@ export default function Register() {
             </Link>
           </InputContainer>
         </form>
+
+        {!valid && (
+          <>
+            <h6> Invalid!</h6>
+            <p>The name must be longer than 4 characters.</p>
+            <p> The password must be longer than 5 characters.</p>{" "}
+            <p>The two passwords must match</p>
+          </>
+        )}
+        {errorState.length > 0 && (
+          <>
+            <h6> Invalid!</h6>
+            <p>{errorState}</p>
+          </>
+        )}
       </LoginInnerContianer>
     </LoginContainer>
   );
@@ -140,6 +232,14 @@ const LoginInnerContianer = styled.div`
   }
   > h1 {
     margin-bottom: 50px;
+  }
+  > h6 {
+    margin-top: 20px;
+    color: red;
+  }
+  > p {
+    font-size: 10px;
+    color: #dd6e6e;
   }
 `;
 const InputContainer = styled.div`

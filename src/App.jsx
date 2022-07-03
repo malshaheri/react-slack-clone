@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import Spinner from "react-spinkit";
 import Register from "./components/Register";
 import Applications from "./components/apps/Applications";
+import Threads from "./components/threads/Threads";
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -41,6 +42,9 @@ function App() {
             <Routes>
               <Route path="/" exact element={<Chat />} />
               <Route path="/applications" element={<Applications />} />
+              <Route path="/threads" element={<Threads />} />
+
+              <Route path="*" element="/error/404" />
             </Routes>
           </AppBody>
         </>

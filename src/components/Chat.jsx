@@ -100,7 +100,6 @@ const HeaderLeft = styled.div`
     display: flex;
     text-transform: lowercase;
     margin-right: 10px;
-    
   }
 `;
 const HeaderRight = styled.div`

@@ -1,49 +1,80 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { db } from "../firebase";
 import { enterRoom } from "../features/apprSlice";
 import { MdOutlineDelete } from "react-icons/md";
+
 //..............................
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-// import firebase from "firebase/compat/app";
+//................................
 
-export default function SidebarOption({ Icon, title, addChannelOption, id }) {
+import { connect } from "react-redux";
+
+import {
+  onSnapshot,
+  addDoc,
+  collection,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+
+//................................
+
+const SidebarOption = ({
+  Icon,
+  title,
+  addChannelOption,
+  id,
+}) => {
   //   console.log("channels", channels && channels.docs);
+  const [rooms, setRooms] = useState([]);
   const dispatch = useDispatch();
-  const addChannel = () => {
-    const channelName = prompt("Add Channel");
-    if (channelName) {
-      db.collection("rooms").add({ name: channelName });
-    }
-  };
+
+  //..................selectChannel................
+
   const selectChannel = () => {
     if (id) {
       dispatch(enterRoom({ roomId: id }));
     }
   };
-  //----------------------------------------------------------------
-  const deleteChannel = () => {
-    db.collection("rooms")
-      .doc(id)
-      .delete()
-      .then(() => {
-        console.log("Document successfully deleted!");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
+  //..................addChannel................
+  const addChannel = async () => {
+    const channelName = prompt("Add Channel");
+    if (channelName) {
+      const collectionRef = collection(db, "rooms");
+      const payload = { name: channelName };
+      const docRef = await addDoc(collectionRef, payload);
+      console.log("The new ID is: " + docRef.id);
+    }
+  };
+
+  //------------------------------deleteChannel----------------------------------
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "rooms"), (snapshot) =>
+        setRooms(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      ),
+    []
+  );
+  const deleteChannel = async (id) => {
+    const docRef = doc(db, "rooms", id);
+    await deleteDoc(docRef);
     window.location.reload();
   };
+
+
 
   return (
     <div>
       <SidebarOptionContianer
         key={id}
-        onClick={addChannelOption ? addChannel : selectChannel}
+        onClick={(addChannelOption ? addChannel : selectChannel)}
       >
         {Icon && <Icon style={{ padding: "8px" }} />}
+
+       
         {Icon ? (
           <h3>{title}</h3>
         ) : (
@@ -52,7 +83,7 @@ export default function SidebarOption({ Icon, title, addChannelOption, id }) {
               <span># {title}</span>
               <LineDelete>
                 {" "}
-                <MdOutlineDelete onClick={deleteChannel} />
+                <MdOutlineDelete onClick={() => deleteChannel(id)} />
               </LineDelete>
             </h3>
           </SidebarOptionChannel>
@@ -60,7 +91,7 @@ export default function SidebarOption({ Icon, title, addChannelOption, id }) {
       </SidebarOptionContianer>
     </div>
   );
-}
+};
 
 const SidebarOptionContianer = styled.div`
   display: flex;
@@ -106,3 +137,5 @@ const LineDelete = styled.div`
     color: white;
   }
 `;
+
+export default connect()(SidebarOption);

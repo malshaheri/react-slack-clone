@@ -4,16 +4,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { BsStopwatch } from "react-icons/bs";
 import { FiPlayCircle } from "react-icons/fi";
-
+import { BiLogOutCircle } from "react-icons/bi";
 import {
   IoRefreshOutline,
   IoPersonCircleOutline,
   IoSearch,
-  IoHelpCircleOutline,
 } from "react-icons/io5";
 
 export default function Header() {
   const [user] = useAuthState(auth);
+  // console.log(user);
   const [seconds, setSeconds] = useState(null);
   const renders = useRef(0);
   const inputRef = useRef();
@@ -41,19 +41,23 @@ export default function Header() {
 
   return (
     <HeaderContainer>
-      <HeaderLeft>
-        <HeaderAvatar
-          onClick={() => auth.signOut()}
-          alt={user?.displayName}
-          src={user?.photoURL}
-        />
+      <HeaderLeft onClick={() => auth.signOut()}>
+        {user.photoURL ? (
+          <img alt={user?.displayName} src={user?.photoURL} />
+        ) : (
+          <HeaderAvatar />
+        )}
+
+        <h5>
+          <BiLogOutCircle />
+        </h5>
+        <h6>out</h6>
       </HeaderLeft>
 
       <HeaderSearch>
         <IoSearch />
-        <input type="text" placeholder="Search" />
+        <input type="text" />
       </HeaderSearch>
-      <IoHelpCircleOutline style={{ marginLeft: "10px" }} />
 
       <HeaderRight>
         <TimerContainer>
@@ -84,14 +88,35 @@ const HeaderLeft = styled.div`
   flex: 0.3;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  padding-left: 20px;
+  position: relative;
+
+
+  :hover {
+    opacity: 0.7;
+  }
+  > img {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #eee;
+    background-color: var(--slack-color);
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  > h5 {
+    position: absolute;
+    font-size: 70px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    left: 0;
+    z-index: -100;
+  }
 `;
 
 const HeaderAvatar = styled(IoPersonCircleOutline)`
   font-size: 40px;
-  cursor: pointer;
-  :hover {
-    opacity: 0.8;
-  }
 `;
 
 const HeaderSearch = styled.div`
@@ -105,11 +130,13 @@ const HeaderSearch = styled.div`
   padding: 0 10px;
   color: gray;
   border: 1px solid gray;
+  margin-left: 35px;
+
   > input {
     background-color: transparent;
     border: none;
     text-align: center;
-    min-width: 30vw;
+    min-width: 20vw;
     outline: none;
     color: white;
     padding: 5px;
@@ -132,7 +159,7 @@ const TimerContainer = styled.span`
 
   > span {
     margin-left: auto;
-    margin-right: 20px;
+    margin-right: 10px;
     font-family: arial;
     color: #fff;
     font-size: 12px;

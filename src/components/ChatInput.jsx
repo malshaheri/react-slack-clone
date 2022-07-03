@@ -33,10 +33,10 @@ export default function ChatInput({ channelName, channelId, chatRef }) {
       <form>
         <input
           value={input}
-          placeholder={`Message #${channelName}`}
+          placeholder={`Message # ${channelName}`}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button  type="submit" onClick={sendMessage}>
+        <button type="submit" onClick={sendMessage}>
           <AiOutlineSend />
         </button>
       </form>
