@@ -11,6 +11,13 @@ import Spinner from "react-spinkit";
 import Register from "./components/Register";
 import Applications from "./components/apps/Applications";
 import Threads from "./components/threads/Threads";
+import Browser from "./components/Browser/Browser";
+import Reactions from "./components/Reactions";
+import Saved from "./components/Saved";
+import People from "./components/People";
+import FileBrowser from "./components/FileBrowser";
+
+;
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -41,8 +48,13 @@ function App() {
             <Sidebar />
             <Routes>
               <Route path="/" exact element={<Chat />} />
-              <Route path="/applications" element={<Applications />} />
               <Route path="/threads" element={<Threads />} />
+              <Route path="/reactions" element={<Reactions />} />
+              <Route path="/saved" element={<Saved />} />
+              <Route path="/browser" element={<Browser />} />
+              <Route path="/people" element={<People />} />
+              <Route path="/applications" element={<Applications />} />
+              <Route path="/filebrowser" element={<FileBrowser />} />
 
               <Route path="*" element="/error/404" />
             </Routes>

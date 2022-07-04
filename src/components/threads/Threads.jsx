@@ -201,7 +201,7 @@ function Threads(props) {
                             <img
                               style={{ width: "50px" }}
                               src={`https://avatars.dicebear.com/api/croodles-neutral/:${ele.Name}.svg`}
-                              alt=""
+                              alt="##"
                             />
                           </div>
                           <TextareaBox type="text">{ele.Message}</TextareaBox>
