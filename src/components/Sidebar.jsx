@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -22,7 +22,6 @@ import {
 import { BsPlusLg } from "react-icons/bs";
 import { AiOutlineUsergroupDelete } from "react-icons/ai";
 
-
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import {
@@ -34,7 +33,6 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-
 
 export default function Sidebar() {
   const [channels] = useCollection(db.collection("rooms"));
@@ -93,14 +91,27 @@ export default function Sidebar() {
         <NavLink to="/threads">
           <SidebarOption Icon={MdMessage} title={"Threads"} />
         </NavLink>
-        <SidebarOption Icon={MdAllInbox} title={"Reactions"} />
-        <SidebarOption Icon={MdDrafts} title={"Saved items"} />
-        <SidebarOption Icon={MdOutlineBookmark} title={"Browser"} />
-        <SidebarOption Icon={MdOutlineGroup} title={"People"} />
-        <Link to="/applications">
+        <NavLink to="/reactions">
+          <SidebarOption Icon={MdAllInbox} title={"Reactions"} />
+        </NavLink>
+
+        <NavLink to="/saved">
+          <SidebarOption Icon={MdDrafts} title={"Saved items"} />
+        </NavLink>
+        <NavLink to="/browser">
+          <SidebarOption Icon={MdOutlineBookmark} title={"Browser"} />
+        </NavLink>
+        <NavLink to="/people">
+          <SidebarOption Icon={MdOutlineGroup} title={"People"} />
+        </NavLink>
+
+        <NavLink to="/applications">
           <SidebarOption Icon={MdApps} title="Apps" />{" "}
-        </Link>
-        <SidebarOption Icon={MdFileCopy} title={"File browser"} />
+        </NavLink>
+
+        <NavLink to="/filebrowser">
+          <SidebarOption Icon={MdFileCopy} title={"File browser"} />
+        </NavLink>
       </div>
 
       <button type="click" onClick={() => setLess(!less)}>
@@ -122,15 +133,34 @@ export default function Sidebar() {
       <div style={{ display: show ? "block" : "none" }}>
         <SidebarOption Icon={BsPlusLg} addChannelOption title={"Add Channel"} />
 
-        <button onClick={()=>deleteQuChannel()}>
+        <button
+          onClick={() => deleteQuChannel()}
+          style={{
+            backgroundColor: "transparent",
+            color: "white",
+            border: "none",
+            cursor: "pointer",
+          }}
+          title="this is a login button"
+        >
           <AiOutlineUsergroupDelete />
-          Query Delete
+          <span
+            style={{
+              marginLeft: "5px",
+              backgroundColor: "transparent",
+              color: "white",
+              border: "none",
+            }}
+          >
+            {" "}
+            Query Delete
+          </span>{" "}
         </button>
 
         {channels?.docs.map((doc) => (
-          <Link to="/">
+          <NavLink to="/">
             <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
-          </Link>
+          </NavLink>
         ))}
       </div>
     </SidebarContainer>
@@ -185,13 +215,14 @@ const SidebarInfo = styled.div`
     align-items: center;
     > h4 {
       font-size: 20px;
-      padding-left:20px;
+      padding-left: 20px;
       font-weight: 900;
       :hover {
         opacity: 0.7;
       }
     }
   }
+
   > h3 > span {
     color: green;
     font-size: 14px;
