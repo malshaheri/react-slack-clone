@@ -1,7 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { BsStopwatch } from "react-icons/bs";
 import { FiPlayCircle } from "react-icons/fi";
 import { BiLogOutCircle } from "react-icons/bi";
@@ -18,6 +20,36 @@ export default function Header() {
   const renders = useRef(0);
   const inputRef = useRef();
   const timerId = useRef();
+  //..................Search...............
+  const [searchState, setSearchState] = useState("");
+  const [result, setResult] = useState([]);
+
+  useEffect(() => {
+    if (searchState.length > 0) {
+      fetch("gs://test-f5a6d.appspot.com".json)
+        .then((response) => response.json())
+        .then((responseData) => {
+          setResult([]);
+          let searchQuery = searchState.toLowerCase();
+          for (const key in responseData) {
+            let value = responseData[key].name.toLowerCase();
+            if (
+              value.slice(0, searchQuery.length).indexOf(searchQuery) !== -1
+            ) {
+              setResult((prevResult) => {
+                return [...prevResult, responseData[key].name];
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setResult([]);
+    }
+  }, [searchState]);
+  //...............................
 
   const startTimer = () => {
     timerId.current = setInterval(() => {
@@ -56,7 +88,38 @@ export default function Header() {
 
       <HeaderSearch>
         <IoSearch />
-        <input type="text" />
+        {/* //................Search............................ */}
+      
+        <input
+          type="text"
+          name={searchState}
+          value={searchState}
+          onChange={(e) => setSearchState(e.target.value)}
+        />
+
+        {result.map((ele, index) => {
+          return (
+            // <Link to="/search" key={index}>
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "50%",
+                height: "60vh",
+                backgroundColor: "red",
+                position: "absolute",
+                bottom: "-500px",
+              }}
+            >
+              {ele}
+            </div>
+            // </Link>
+          );
+        })}
+
+        {/* //............................................... */}
       </HeaderSearch>
 
       <HeaderRight>
@@ -91,7 +154,6 @@ const HeaderLeft = styled.div`
   cursor: pointer;
   padding-left: 20px;
   position: relative;
-
 
   :hover {
     opacity: 0.7;

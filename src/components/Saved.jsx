@@ -1,11 +1,12 @@
 
 import React from "react";
 import styled from "styled-components";
+import Search from "./Search";
 
 export default function Saved() {
   return (
     <Container>
-      <img
+       <img
         style={{ width: "200px" }}
         src={`https://avatars.dicebear.com/api/croodles-neutral/:125vddsf4ökkj.svg`}
         alt="mix"
@@ -32,7 +33,7 @@ export default function Saved() {
         treatise on the theory of ethics, very popular during the Renaissance.
         The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes
         from a line in section 1.10.32.
-      </p>
+      </p> 
     </Container>
   );
 }
@@ -42,7 +43,7 @@ const Container = styled.div`
   flex-grow: 1;
   overflow: scroll;
   margin: 150px;
-  background-color: #def;
+  /* background-color: red; */
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 `;
