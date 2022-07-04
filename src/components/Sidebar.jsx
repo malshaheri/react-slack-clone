@@ -4,7 +4,7 @@ import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db, auth } from "../firebase";
 
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { BiPencil } from "react-icons/bi";
 import { VscCircleFilled } from "react-icons/vsc";

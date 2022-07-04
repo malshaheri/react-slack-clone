@@ -1,4 +1,4 @@
-export default [
+const  arrayLink =[
   {
     id: 1,
     img: "./images/canva-logo-B4BE25729A-seeklogo.com.png",
@@ -120,3 +120,6 @@ export default [
       "One solution for meetings, chat, whiteboard, phone, and more so you can connect with anyone from anywhere.",
   },
 ];
+
+
+export default arrayLink;

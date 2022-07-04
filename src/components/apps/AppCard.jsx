@@ -5,7 +5,7 @@ export default function Appcard(props) {
   return (
     <CardColumn>
       <CardContainer>
-        <img src={props.img}></img>
+        <img src={props.img} alt={props.name} />
         <CardInfo>
           <h4>{props.name}</h4>
           <p>{props.description}</p>

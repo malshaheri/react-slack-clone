@@ -51,7 +51,7 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
       onSnapshot(collection(db, "rooms"), (snapshot) =>
         setRooms(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
       ),
-    []
+    [rooms]
   );
   const deleteChannel = async (id) => {
     const docRef = doc(db, "rooms", id);

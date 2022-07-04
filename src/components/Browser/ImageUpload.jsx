@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 export default function ImageUpload(props) {
   const [fileState, setFileState] = useState(null);
-  const acceptedTypes = ["image/png", "image/jpeg"];
+  // const acceptedTypes = ["image/png", "image/jpeg"];
 
   const onFileAdd = (e) => {
     const file = e.target.files[0];
