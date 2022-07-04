@@ -1,4 +1,4 @@
-# Slack Clone
+# Slack Clone clip:
 ![slack clone ](https://user-images.githubusercontent.com/94117380/177116465-82c56364-44e2-4973-8aa8-b4c9ab84db8d.gif)
 
 # Getting Started with Create React App and Redux
